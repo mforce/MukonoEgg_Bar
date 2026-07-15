@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,7 +72,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DOMS.wsgi.application'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# whitenoise.django.GzipManifestStaticFilesStorage was removed in whitenoise
+# 4.x. The active storage is configured below based on DEBUG (see the Static
+# files section), switching between Django's default storage (dev) and
+# whitenoise.storage.CompressedManifestStaticFilesStorage (prod).
 
 
 # Database
@@ -119,9 +123,18 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# In production (DEBUG=False) use whitenoise's compressed + manifest storage;
+# in development use Django's default storage so `runserver` works without
+# running `collectstatic` first.
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'

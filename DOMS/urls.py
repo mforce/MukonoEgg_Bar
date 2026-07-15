@@ -20,6 +20,15 @@ from orders import views as my_order
 from orders import views
 from django.contrib.auth import views as auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView,
+)
+
+# NOTE: This project was written for Django 1.x, which exposed the auth views
+# (`auth.login`, `auth.logout`, `auth.password_change`) as plain functions.
+# Those were removed in Django 1.11 / 2.1 and replaced with class-based views.
+# Django 2.2.17 keeps the deprecated `url()` alias, so the regex routes below
+# are left unchanged; only the three auth views are modernised here.
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,7 +42,7 @@ urlpatterns = [
     url(r'^collect$', my_order.collections, name='collections'),
     url(r'^collected$', my_order.collections, name='collections'),
     url(r'^collected/delete/(?P<collected_id>\d+)/$', my_order.collectiondestroy, name='delete'),
-    url(r'^users/login/$', auth.login, {'template_name': 'login.html'}, name='login'),
-    url(r'^users/logout/$', auth.logout, {'next_page': '/'}, name='logout'),
-    url(r'^users/change_password/$', login_required(auth.password_change), {'post_change_redirect' : '/','template_name': 'change_password.html'}, name='change_password'),
+    url(r'^users/login/$', LoginView.as_view(template_name='login.html'), name='login'),
+    url(r'^users/logout/$', LogoutView.as_view(next_page='/'), name='logout'),
+    url(r'^users/change_password/$', login_required(PasswordChangeView.as_view(success_url='/', template_name='change_password.html')), name='change_password'),
 ]

@@ -79,7 +79,11 @@ celerybeat-schedule
 
 # virtualenv
 venv/
+.venv/
 ENV/
+
+# collectstatic output (dev/prod)
+staticfiles/
 
 # Spyder project settings
 .spyderproject
