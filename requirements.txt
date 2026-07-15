@@ -1,20 +1,21 @@
 # ---------------------------------------------------------------------------
-# Minimal, accurate dependency set for the DOMS/MukonoEgg_Bar Django project.
+# Dependencies for the DOMS/MukonoEgg_Bar Django project.
 #
-# The previous requirements.txt was copied from an unrelated project (it bundled
-# Wagtail, Kivy, pandas/matplotlib, Windows-only wheels like pywin32, and dev
-# tooling like tox/pipenv). This project's code only imports Django, the
-# django-widget-tweaks app (listed in INSTALLED_APPS) and whitenoise (used as
-# STATICFILES_STORAGE). Everything else has been removed.
+# Target runtime: Python 3.13 on Django 5.2 LTS (supported until April 2028).
+# The code only imports Django, the django-widget-tweaks app (used in
+# INSTALLED_APPS / templates) and whitenoise (STATICFILES via STORAGES). All
+# other Django runtime dependencies (asgiref, sqlparse) are pulled in
+# transitively and left to the resolver rather than pinned manually.
 #
-# Target runtime: Python 3.9 (Django 2.2 LTS supports Py 3.5-3.9). The
-# existing db.sqlite3 was migrated under an early Django 2.x, so Django 2.2.17
-# stays binary-compatible with the on-disk migration state.
+# Upgrade history:
+#   - 2.2.17 baseline (made runnable on Python 3.9; see README notes).
+#   - 5.2 LTS: url() -> path()/re_path(), STATICFILES_STORAGE -> STORAGES,
+#     USE_L10N removed, DEFAULT_AUTO_FIELD added, delivery_date default fixed.
 # ---------------------------------------------------------------------------
 
-Django==2.2.17
-django-widget-tweaks==1.4.8
-whitenoise==5.2.0
-pytz==2020.4          # required by Django 2.2
-sqlparse==0.4.1       # required by Django 2.2
-asgiref==3.3.1        # required by Django 2.2
+Django==5.2.16
+django-widget-tweaks==1.5.1
+whitenoise==6.9.0
+
+# Production WSGI server (e.g. Heroku Procfile uses `gunicorn DOMS.wsgi`).
+gunicorn==26.0.0
