@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +65,13 @@
 								<li class="dropdown-header">My profile</li>
 								<li><a href="{% url 'change_password' %}">Change Password</a></li>
 								<li class="divider"></li>
-								<li><a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
+								<li>
+								<form method="post" action="{% url 'logout' %}" style="display:inline">{% csrf_token %}
+									<button type="submit" class="btn btn-link" style="padding:0;border:0;background:none">
+										<a style="cursor:pointer"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a>
+									</button>
+								</form>
+							</li>
 							</ul><!--end .dropdown-menu -->
 						</li><!--end .dropdown -->
 					</ul><!--end .header-nav-profile -->
@@ -169,7 +175,13 @@
 							<!--start submenu -->
 							<ul>
 								<li><a href="{% url 'change_password' %}" ><span class="title">Change Password</span></a></li>
-								<li><a href="{% url 'logout' %}" ><span class="title">Logout</span></a></li>
+								<li>
+								<form method="post" action="{% url 'logout' %}">{% csrf_token %}
+									<button type="submit" class="btn btn-link" style="padding:0;border:0">
+										<a style="cursor:pointer"><span class="title">Logout</span></a>
+									</button>
+								</form>
+							</li>
 							</ul><!--end /submenu -->
 						</li><!--end /menu-li -->
 						<!-- END PROFILE -->

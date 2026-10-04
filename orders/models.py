@@ -8,7 +8,9 @@ class Order (models.Model):
     name = models.CharField(max_length=20)
     phone = models.CharField(max_length=10)
     address = models.TextField()
-    delivery_date = models.DateField(blank=True, default=timezone.now())
+    # Pass the callable (not the result) so each new order gets the current
+    # time at creation rather than a fixed import-time value (fields.W161).
+    delivery_date = models.DateField(blank=True, default=timezone.now)
     product_id = models.TextField(max_length=300, default='egg-510')
     payment_option = models.CharField(max_length=50)
     px_per_tray = models.IntegerField(default=9000)

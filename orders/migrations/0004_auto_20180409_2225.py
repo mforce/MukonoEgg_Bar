@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import datetime
 from django.db import migrations, models
-from django.utils.timezone import utc
+
 
 
 class Migration(migrations.Migration):
@@ -27,6 +27,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='delivery_date',
-            field=models.DateField(blank=True, default=datetime.datetime(2018, 4, 9, 19, 25, 56, 903779, tzinfo=utc)),
+            field=models.DateField(blank=True, default=datetime.datetime(2018, 4, 9, 19, 25, 56, 903779, tzinfo=datetime.timezone.utc)),
         ),
     ]
